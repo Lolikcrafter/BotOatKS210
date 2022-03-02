@@ -1,11 +1,17 @@
 import requests as urlreq
+from requests_html import HTMLSession
 import pandas as pd
 
 rasp = {}
 	
 def get_schedule(needday):
 	global rasp
-	req = urlreq.get("https://www.oat.ru/students/raspisanie/schedule-campus_1/rspcls18.html", headers={"User-Agent":"Mozilla/5.0"}, proxies={"http": "http://85.26.146.169:80", "http": "htpps://188.170.233.105:3128"}).text
+	#session = HTMLSession()
+	#req = session.get('https://www.oat.ru/students/raspisanie/schedule-campus_1/rspcls18.html')
+	#req.html.render()
+	#print(req.html.html)
+	req = urlreq.get("https://www.oat.ru/students/raspisanie/schedule-campus_1/rspcls18.html", headers={"User-Agent":"Mozilla/5.0"}, proxies={"http": "http://85.26.146.169:80", "http": "htpps://91.224.62.194:8080"}).text
+	#print(req)
 	wp = req.replace("</td>", "###</td>")
 	dfs = pd.read_html(wp)
 
@@ -13,8 +19,9 @@ def get_schedule(needday):
 	raspisanie2 = dfs[0].to_dict("list")
 
 	for key in raspisanie:
+		#print(raspisanie2[key])
 		raspisanie2[key] = list(map(lambda x:x.split("###"), raspisanie2[key]))
-	print(raspisanie2)
+	#print(raspisanie2)
 	raspisanie2.pop(0)
 	raspisanie2.pop(1)
 
