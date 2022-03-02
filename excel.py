@@ -4,7 +4,7 @@ url = "https://www.oat.ru/students/raspisanie"
 
 def download_file(name="Ленина"):
 	xl_url = "/izmenenia/Ленина 24.xlsx"
-	html = req.get(f"{url}/izmenenia.php", allow_redirects=True)
+	html = req.get(f"{url}/izmenenia.php", allow_redirects=True, headers={"User-Agent":"Mozilla/5.0"})
 	html = html.content.decode("utf-8").split("\n")
 	for i in html:
 		if name in i and "href" in i:
