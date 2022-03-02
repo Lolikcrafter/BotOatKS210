@@ -1,5 +1,4 @@
 import requests as urlreq
-from requests_html import HTMLSession
 import pandas as pd
 
 rasp = {}
@@ -21,7 +20,7 @@ def get_schedule(needday):
 	for key in raspisanie:
 		#print(raspisanie2[key])
 		raspisanie2[key] = list(map(lambda x:x.split("###"), raspisanie2[key]))
-	#print(raspisanie2)
+	print(raspisanie2)
 	raspisanie2.pop(0)
 	raspisanie2.pop(1)
 
