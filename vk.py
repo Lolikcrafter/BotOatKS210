@@ -79,7 +79,7 @@ def listening():
 						else:
 							send_message(f"{week_word[week_num]}ое воскресенье\n\nПриятного отдыха", kb)
 				except Exception as e:
-					send_message(e, peer_id, kb)
+					#send_message(e, peer_id, kb)
 					print("Заебали", e)
 
 		elif action == "message_event":
@@ -144,7 +144,7 @@ def listening():
 					message = f"{week_word[week_num]}ое воскресенье\n\nПриятного отдыха"
 			except Exception as e:
 				print("Заебали", e)
-				send_message(e, peer_id, kb)
+				#send_message(e, peer_id, kb)
 			send_message(message, peer_id, kb)
 
 def send_event(event_data, user_id, peer_id, event_id):
