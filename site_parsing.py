@@ -5,7 +5,7 @@ rasp = {}
 	
 def get_schedule(needday):
 	global rasp
-	req = urlreq.get("https://www.oat.ru/students/raspisanie/schedule-campus_1/rspcls18.html", headers={"User-Agent":"Mozilla/5.0"}, proxies={"https": "http://91.224.62.194:8080"}).text
+	req = urlreq.get("https://www.oat.ru/students/raspisanie/schedule-campus_1/rspcls18.html", headers={"User-Agent":"Mozilla/5.0"}, proxies={"https": "http://91.224.62.194:8080", "http": "http://185.221.161.85:80"}).text
 	wp = req.replace("</td>", "###</td>")
 	dfs = pd.read_html(wp)
 
