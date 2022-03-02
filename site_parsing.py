@@ -43,6 +43,7 @@ def get_schedule(needday):
 						cabinet = subject[2]
 						raspisanie[day].update([(f"{num+1} пара: ",f"{subject[0]}\n⠀Препод: {teacher}\n⠀Кабинет: {cabinet}\n")])
 		rasp = raspisanie
+		print("Done")
 		return rasp[needday]
 	except Exception as e:
 		print("site_parsing", e)
