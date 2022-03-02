@@ -14,6 +14,7 @@ def get_schedule(needday):
 
 	for key in raspisanie:
 		raspisanie2[key] = list(map(lambda x:x.split("###"), raspisanie2[key]))
+	print(raspisanie2)
 	raspisanie2.pop(0)
 	raspisanie2.pop(1)
 
@@ -46,5 +47,5 @@ def get_schedule(needday):
 	return rasp[needday]
 
 if __name__ == "__main__":
-	pass
+	print(get_schedule("1-Четверг"))
 
