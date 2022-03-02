@@ -3,17 +3,20 @@ import requests as req
 url = "https://www.oat.ru/students/raspisanie"
 
 def download_file(name="Ленина"):
-	xl_url = "/izmenenia/Ленина 24.xlsx"
-	html = req.get(f"{url}/izmenenia.php", allow_redirects=True, headers={"User-Agent":"Mozilla/5.0"})
-	html = html.content.decode("utf-8").split("\n")
-	for i in html:
-		if name in i and "href" in i:
-			xl_url = i.split("\"")[1]
-			break
-	file = req.get(f"{url}/{xl_url}", allow_redirects=True)
-	filename = xl_url.split("/")[-1]
-	open(f"{filename}", "wb").write(file.content)
-	return filename
+	try:
+		xl_url = "/izmenenia/Ленина 24.xlsx"
+		html = req.get(f"{url}/izmenenia.php", allow_redirects=True, headers={"User-Agent":"Mozilla/5.0"})
+		html = html.content.decode("utf-8").split("\n")
+		for i in html:
+			if name in i and "href" in i:
+				xl_url = i.split("\"")[1]
+				break
+		file = req.get(f"{url}/{xl_url}", allow_redirects=True)
+		filename = xl_url.split("/")[-1]
+		open(f"{filename}", "wb").write(file.content)
+		return filename
+	except Exception as e:
+		print("download_file", e)
 
 def find_changes(filename, group="КС210", date="13.10"):
 	if len(group) > 5:
