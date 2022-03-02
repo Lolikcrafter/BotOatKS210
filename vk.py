@@ -29,58 +29,58 @@ def listening():
 			date = event.raw['object']['message']['date']
 			conversation_id = event.raw['object']['message']['peer_id']
 			if text:
-				try:
-					chat_name = vk.messages.getConversationsById(peer_ids=conversation_id)['items'][0]['chat_settings']['title']
-					if text[0].capitalize() == nickname and text[1] == "расписание":
-						week_num = 0
-						dayofweek = 0
-						counts = 0
-						if "завтра" in text:
-							date += time.timezone + 86400
-							week_num = 2 - (datetime.date(datetime.datetime.fromtimestamp(date).year,datetime.datetime.fromtimestamp(date).month, datetime.datetime.fromtimestamp(date).day).isocalendar().week) % 2
-							dayofweek = datetime.datetime.weekday(datetime.datetime.fromtimestamp(date))
+				#try:
+				chat_name = vk.messages.getConversationsById(peer_ids=conversation_id)['items'][0]['chat_settings']['title']
+				if text[0].capitalize() == nickname and text[1] == "расписание":
+					week_num = 0
+					dayofweek = 0
+					counts = 0
+					if "завтра" in text:
+						date += time.timezone + 86400
+						week_num = 2 - (datetime.date(datetime.datetime.fromtimestamp(date).year,datetime.datetime.fromtimestamp(date).month, datetime.datetime.fromtimestamp(date).day).isocalendar().week) % 2
+						dayofweek = datetime.datetime.weekday(datetime.datetime.fromtimestamp(date))
+					else:
+						date += time.timezone
+						week_num = 2 - (datetime.date(datetime.datetime.fromtimestamp(date).year,datetime.datetime.fromtimestamp(date).month, datetime.datetime.fromtimestamp(date).day).isocalendar().week) % 2
+						dayofweek = datetime.datetime.weekday(datetime.datetime.fromtimestamp(date))
+					if dayofweek != 6:
+						schedule = get_schedule(f"{week_num}-{days[dayofweek]}")
+						week_name = week_word[week_num]
+						if any(dayofweek == num for num in (2, 4, 5)):
+							week_name += "ая"
 						else:
-							date += time.timezone
-							week_num = 2 - (datetime.date(datetime.datetime.fromtimestamp(date).year,datetime.datetime.fromtimestamp(date).month, datetime.datetime.fromtimestamp(date).day).isocalendar().week) % 2
-							dayofweek = datetime.datetime.weekday(datetime.datetime.fromtimestamp(date))
-						if dayofweek != 6:
-							schedule = get_schedule(f"{week_num}-{days[dayofweek]}")
-							week_name = week_word[week_num]
-							if any(dayofweek == num for num in (2, 4, 5)):
-								week_name += "ая"
+							if week_num == 1:
+								week_name += "ый"
 							else:
-								if week_num == 1:
-									week_name += "ый"
-								else:
-									week_name += "ой"
-							thursday_state = ""
-							if dayofweek == 3:
-								today = datetime.datetime.fromtimestamp(date).day
-								cal = calendar.Calendar(datetime.datetime.weekday(datetime.datetime.fromtimestamp(date - (86400 * (datetime.datetime.fromtimestamp(date).day - 1)))))
-								for day, name in cal.itermonthdays2(datetime.datetime.fromtimestamp(date).year, datetime.datetime.fromtimestamp(date).month):
-									if day != today and name == 3 and day:
-										counts += 1
-									if day == today:
-										counts += 1
-										break
-							message = f"Расписание {chat_name}\n{week_name} {days[dayofweek]}\n\n"
-							filename = download_file("Ленина")
-							changes = find_changes(filename, group=chat_name, date=f"{datetime.datetime.fromtimestamp(date).strftime('%d.%m')}")
-							#print(changes)
-							for key in schedule:
-								message += f"{key}{schedule[key]}\n"
-							for change in changes:
-								message += f"{change}\n"
-							if counts == 1 or counts == 3:
-								message += "Сегодня классный час"
-							elif counts == 2 or counts == 4:
-								message += "Сегодня методический час"
-							send_message(message, conversation_id, kb)
-						else:
-							send_message(f"{week_word[week_num]}ое воскресенье\n\nПриятного отдыха", kb)
-				except Exception as e:
+								week_name += "ой"
+						thursday_state = ""
+						if dayofweek == 3:
+							today = datetime.datetime.fromtimestamp(date).day
+							cal = calendar.Calendar(datetime.datetime.weekday(datetime.datetime.fromtimestamp(date - (86400 * (datetime.datetime.fromtimestamp(date).day - 1)))))
+							for day, name in cal.itermonthdays2(datetime.datetime.fromtimestamp(date).year, datetime.datetime.fromtimestamp(date).month):
+								if day != today and name == 3 and day:
+									counts += 1
+								if day == today:
+									counts += 1
+									break
+						message = f"Расписание {chat_name}\n{week_name} {days[dayofweek]}\n\n"
+						filename = download_file("Ленина")
+						changes = find_changes(filename, group=chat_name, date=f"{datetime.datetime.fromtimestamp(date).strftime('%d.%m')}")
+						#print(changes)
+						for key in schedule:
+							message += f"{key}{schedule[key]}\n"
+						for change in changes:
+							message += f"{change}\n"
+						if counts == 1 or counts == 3:
+							message += "Сегодня классный час"
+						elif counts == 2 or counts == 4:
+							message += "Сегодня методический час"
+						send_message(message, conversation_id, kb)
+					else:
+						send_message(f"{week_word[week_num]}ое воскресенье\n\nПриятного отдыха", kb)
+				#except Exception as e:
 					#send_message(e, peer_id, kb)
-					print("Заебали", e)
+					#print("Заебали", e)
 
 		elif action == "message_event":
 			event_type = event.raw['object']['payload']['type']
