@@ -1,4 +1,4 @@
-import urllib.request as urlreq
+import requests as urlreq
 import pandas as pd
 
 rasp = {}
@@ -6,8 +6,8 @@ rasp = {}
 def get_schedule(needday):
 	try:
 		global rasp
-		req = urlreq.Request("https://www.oat.ru/students/raspisanie/schedule-campus_1/rspcls18.html", headers={"User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:97.0) Gecko/20100101 Firefox/97.0", "Accept-Encoding": "gzip, deflate, br", "Host": "www.oat.ru"})
-		wp = urlreq.urlopen(req).read().decode("utf-8").replace("</td>", "###</td>")
+		req = urlreq.get("https://www.oat.ru/students/raspisanie/schedule-campus_1/rspcls18.html", headers={"User-Agent":"Mozilla/5.0"}).text
+		wp = req.read().decode("utf-8").replace("</td>", "###</td>")
 		dfs = pd.read_html(wp)
 
 		raspisanie = dfs[0].to_dict("list")
