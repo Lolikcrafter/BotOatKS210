@@ -28,9 +28,9 @@ def find_changes(filename, group="КС210", date="13.10"):
 		if "xlsx" in filename:
 			import openpyxl as xl
 			xls = xl.load_workbook(filename)
-			#print(xls[date])
 			for row in xls[date].values:
 				if group in row:
+					#print(row)
 					raw_changes.append(row)
 		else:
 			import xlrd as xl
@@ -59,6 +59,8 @@ def find_changes(filename, group="КС210", date="13.10"):
 			subject_teacher = row[10]
 			if subject_will != "Отмена":
 				changes.append(f"⠀{subject_num_will} пара: {subject_will}\n⠀⠀Препод: {subject_teacher}\n⠀⠀Кабинет: {cabinet}\n")
+			else:
+				changes.append(f"⠀{subject_num_was} пара: {subject_was}\n⠀⠀Состояние: {subject_will}")
 	else:
 		changes.append("Изменений нет")
 	#print(changes, group, date, sep="\n")
@@ -67,5 +69,5 @@ def find_changes(filename, group="КС210", date="13.10"):
 
 
 if __name__ == "__main__":
-	find_changes("Ленина 24.xlsx", date="01.03", group="КС-210")
+	print(find_changes(download_file(), date="02.03", group="КС210"))
 

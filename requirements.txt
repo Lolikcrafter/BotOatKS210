@@ -23,4 +23,3 @@ urllib3==1.25.11
 vk-api==11.9.7
 xlrd==2.0.1
 lxml==4.8.0
-cloudscraper==1.2.58

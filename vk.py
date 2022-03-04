@@ -90,7 +90,7 @@ def listening():
 			message = ""
 			event_data = ""
 			date = vk.utils.getServerTime()
-			print(date)
+			#print(date)
 			try:
 				chat_name = vk.messages.getConversationsById(peer_ids=peer_id)['items'][0]['chat_settings']['title']
 				week_num = 0
@@ -98,17 +98,17 @@ def listening():
 				counts = 0
 				if event_type == "tommorow":
 					date += 86400 #time.timezone + 86400
-					print(date)
+					#print(date)
 					week_num = 2 - (datetime.date(datetime.datetime.fromtimestamp(date).year,datetime.datetime.fromtimestamp(date).month, datetime.datetime.fromtimestamp(date).day).isocalendar().week) % 2
 					dayofweek = datetime.datetime.weekday(datetime.datetime.fromtimestamp(date))
 				else:
 					#date += time.timezone
-					print(date)
+					#print(date)
 					week_num = 2 - (datetime.date(datetime.datetime.fromtimestamp(date).year,datetime.datetime.fromtimestamp(date).month, datetime.datetime.fromtimestamp(date).day).isocalendar().week) % 2
 					dayofweek = datetime.datetime.weekday(datetime.datetime.fromtimestamp(date))
 				if dayofweek != 6:
 					schedule = get_schedule(f"{week_num}-{days[dayofweek]}")
-					print(week_num, days[dayofweek])
+					#print(week_num, days[dayofweek])
 					week_name = week_word[week_num]
 					if any(dayofweek == num for num in (2, 4, 5)):
 						week_name += "ая"
@@ -130,7 +130,7 @@ def listening():
 					message = f"Расписание {chat_name}\n{week_name} {days[dayofweek]}\n\n"
 					filename = download_file("Ленина")
 					changes = find_changes(filename, group=chat_name, date=f"{datetime.datetime.fromtimestamp(date).strftime('%d.%m')}")
-					print(f"{datetime.datetime.fromtimestamp(date).strftime('%d.%m')}")
+					#print(f"{datetime.datetime.fromtimestamp(date).strftime('%d.%m')}")
 					#print(changes)
 					for key in schedule:
 						message += f"{key}{schedule[key]}\n"

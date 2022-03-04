@@ -1,17 +1,25 @@
-import requests as urlreq
+import urllib.request as urlreq
 import pandas as pd
+import time
 
 rasp = {}
+
+headers = { 
+	"user-agent" : "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.85 Safari/537.36", 
+	"accept" : "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,/;q=0.8,application/signed-exchange;v=b3;q=0.9", 
+	"accept-encoding" : "gzip, deflate, br", 
+	"cache-control"   : "no-cache", 
+	"pragma" : "no-cache", 
+	"upgrade-insecure-requests" : "1" 
+}
+
+proxies={"http": "http://195.91.221.230:55443", "http": "htpps://91.224.62.194:8080"}
 	
 def get_schedule(needday):
 	global rasp
 	#session = HTMLSession()
-	#req = session.get('https://www.oat.ru/students/raspisanie/schedule-campus_1/rspcls18.html')
-	#req.html.render()
-	#print(req.html.html)
-	req = urlreq.get("https://www.oat.ru/students/raspisanie/schedule-campus_1/rspcls18.html", headers={"User-Agent":"Mozilla/5.0"}, proxies={"http": "http://85.26.146.169:80", "http": "htpps://91.224.62.194:8080"}).text
-	#print(req)
-	wp = req.replace("</td>", "###</td>")
+	req = urlreq.Request("https://www.oat.ru/students/raspisanie/schedule-campus_1/rspcls18.html", headers={"User-Agent":"Mozilla/5.0"})
+	wp = urlreq.urlopen(req).read().decode("utf-8").replace("</td>", "###</td>")
 	dfs = pd.read_html(wp)
 
 	raspisanie = dfs[0].to_dict("list")
@@ -20,7 +28,7 @@ def get_schedule(needday):
 	for key in raspisanie:
 		#print(raspisanie2[key])
 		raspisanie2[key] = list(map(lambda x:x.split("###"), raspisanie2[key]))
-	print(raspisanie2)
+	#print(raspisanie2)
 	raspisanie2.pop(0)
 	raspisanie2.pop(1)
 
@@ -49,9 +57,9 @@ def get_schedule(needday):
 					cabinet = subject[2]
 					raspisanie[day].update([(f"{num+1} пара: ",f"{subject[0]}\n⠀Препод: {teacher}\n⠀Кабинет: {cabinet}\n")])
 	rasp = raspisanie
-	print("Done")
+	#print("Done")
 	return rasp[needday]
 
 if __name__ == "__main__":
-	print(get_schedule("1-Четверг"))
+	print(get_schedule("1-Суббота"))
 
