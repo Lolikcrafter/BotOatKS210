@@ -45,10 +45,10 @@ def find_changes(filename, group="КС210", date="13.10"):
 						else:
 							row += (None,)
 					raw_changes.append(row)
-	except:
-		pass
+	except Exception as e:
+		print("excel -", e)
 	if raw_changes:
-		changes.append("Изменения:\n")
+		changes.append("Изменения:")
 		for row in raw_changes:
 			subject_num_was = row[2]
 			subject_was = row[4]
@@ -58,9 +58,9 @@ def find_changes(filename, group="КС210", date="13.10"):
 			subject_will = row[9]
 			subject_teacher = row[10]
 			if subject_will != "Отмена":
-				changes.append(f"⠀{subject_num_will} пара: {subject_will}\n⠀⠀Препод: {subject_teacher}\n⠀⠀Кабинет: {cabinet}\n")
+				changes.append(f"⠀{int(subject_num_will)} пара: {subject_will}\n⠀⠀Препод: {subject_teacher}\n⠀⠀Кабинет: {cabinet}\n")
 			else:
-				changes.append(f"⠀{subject_num_was} пара: {subject_was}\n⠀⠀Состояние: {subject_will}")
+				changes.append(f"⠀{int(subject_num_was)} пара: {subject_was}\n⠀⠀Состояние: {subject_will}")
 	else:
 		changes.append("Изменений нет")
 	#print(changes, group, date, sep="\n")

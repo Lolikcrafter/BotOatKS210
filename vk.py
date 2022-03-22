@@ -35,6 +35,8 @@ def listening():
 					week_num = 0
 					dayofweek = 0
 					counts = 0
+					if "Стоп" in text:
+						fgdg += 2
 					if "завтра" in text:
 						date += time.timezone + 86400
 						week_num = 2 - (datetime.date(datetime.datetime.fromtimestamp(date).year,datetime.datetime.fromtimestamp(date).month, datetime.datetime.fromtimestamp(date).day).isocalendar().week) % 2
@@ -77,7 +79,7 @@ def listening():
 							message += "Сегодня методический час"
 						send_message(message, conversation_id, kb)
 					else:
-						send_message(f"{week_word[week_num]}ое воскресенье\n\nПриятного отдыха", kb)
+						send_message(f"{week_word[week_num]}ое воскресенье\n\nПриятного отдыха",conversation_id, kb)
 				#except Exception as e:
 					#send_message(e, peer_id, kb)
 					#print("Заебали", e)
@@ -140,12 +142,13 @@ def listening():
 						message += "Сегодня классный час"
 					elif counts == 2 or counts == 4:
 						message += "Сегодня методический час"
+					send_message(message, peer_id, kb)
 				else:
-					message = f"{week_word[week_num]}ое воскресенье\n\nПриятного отдыха"
+					send_message(f"{week_word[week_num]}ое воскресенье\n\nПриятного отдыха", peer_id, kb)
 			except Exception as e:
 				print("Заебали", e)
 				#send_message(e, peer_id, kb)
-			send_message(message, peer_id, kb)
+			
 
 def send_event(event_data, user_id, peer_id, event_id):
 	try:
